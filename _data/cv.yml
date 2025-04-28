@@ -2,31 +2,40 @@
   type: map
   contents:
     - name: Full Name
-      value: Albert Einstein
-    - name: Date of Birth
-      value: 14th March 1879
+      value: Yilang Ding
+    # - name: Date of Birth
+    #   value: 14th March 1879
     - name: Languages
-      value: English, German
+      value: English, Mandarin
 
 - title: Education
   type: time_table
   contents:
-    - title: PhD
-      institution: University of Zurich, Zurich, Switzerland
-      year: 1905
+    - title: B.S. in Mathematics and Computer Science
+      institution: Emory University, Atlanta, Georgia, US
+      year: 2022 - Now
       description:
-        - Description 1.
-        - Description 2.
-        - title: Description 3.
+        - Computer Science Chair's Award for Academic Excellence (2025)
+        - Dean's List (2023, 2024)
+        - title: Coursework
           contents:
-            - Sub-description 1.
-            - Sub-description 2.
-    - title: Federal teaching diploma
-      institution: Eidgenössische Technische Hochschule, Zurich, Switzerland
-      year: 1900
-      description:
-        - Description 1.
-        - Description 2.
+            - CS 326 - Analysis of Algorithms
+            - CS 334 - Machine Learning
+            - CS 370 - Computer Science Practicum
+            - CS 470 - Data Mining
+            - MATH 211 - Multivariable Calculus
+            - MATH 212 - Differential Equations
+            - MATH 221 - Linear Algebra
+            - MATH 250 - Foundations of Mathematics
+            - MATH 315 - Numerical Analysis
+            - MATH 346 - Linear Optimization
+            - MATH 361/2 - Probability and Statistics I/II
+
+
+    - title: High School Diploma
+      institution: The Peddie School, Hightstown, New Jersey, US
+      year: 2018 - 2022
+
 
 - title: Experience
   type: time_table
