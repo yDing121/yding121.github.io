@@ -24,13 +24,12 @@
   },
   "work": [
     {
-      "name": "Institute for Advanced Study, Princeton University",
-      "position": "Professor of Theoretical Physics",
-      "url": "https://example.com",
-      "startDate": "1933-01-01",
-      "endDate": "1955-01-01",
-      "summary": "Teaching at Palmer Physical Laboratory (now 302 Frist Campus Center). While not a professor at Princeton, I associated with the physics professors and continued to give lectures on campus.",
-      "highlights": ["Relativity"]
+      "name": "Amazon Ads",
+      "position": "Software Development Engineer Intern",
+      "startDate": "2025-06-02",
+      "endDate": "2025-08-22",
+      "summary": "I should write a summary for what I've done in my internship here",
+      "highlights": ["FAANG"]
     }
   ],
   "volunteer": [
@@ -149,13 +148,13 @@
   ],
   "languages": [
     {
-      "language": "German",
+      "language": "Mandarin",
       "fluency": "Native speaker",
       "icon": ""
     },
     {
       "language": "English",
-      "fluency": "Fluent",
+      "fluency": "Native speaker",
       "icon": ""
     }
   ],
