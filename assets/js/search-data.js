@@ -72,7 +72,40 @@ ninja.data = [{
               handler: () => {
                 window.location.href = "/blog/";
               },
-            },{id: "post-a-post-with-plotly-js",
+            },{id: "post-machine-learning-101",
+        
+          title: "Machine Learning 101",
+        
+        description: "This is the start of my blog on machine learning. While I don&#39;t know what this blog will look like at the moment, I plan on covering the basics of machine learning theory and some of my personal insights and findings. Despite being taking the form of a blog, this really is for myself. Enjoy!",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/ML-start/";
+          
+        },
+      },{id: "post-blog-template",
+        
+          title: "Blog Template",
+        
+        description: "This is a general blog template",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/template/";
+          
+        },
+      },{id: "post-blog-page-test",
+        
+          title: "blog page test",
+        
+        description: "this is a test of the blog page",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/testing/";
+          
+        },
+      },{id: "post-a-post-with-plotly-js",
         
           title: "a post with plotly.js",
         
