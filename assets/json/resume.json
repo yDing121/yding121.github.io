@@ -32,18 +32,6 @@
       "highlights": ["FAANG"]
     }
   ],
-  "volunteer": [
-    {
-      "organization": "People's Climate March",
-      "location": "Zurich, Switzerland",
-      "position": "Lead Organizer",
-      "url": "https://example.com",
-      "startDate": "2014-04-01",
-      "endDate": "2015-07-01",
-      "summary": "Lead organizer for the New York City branch of the People's Climate March, the largest climate march in history.",
-      "highlights": ["Awarded 'Climate Hero' award by Greenpeace for my efforts organizing the march.", "Men of the year 2014 by Time magazine"]
-    }
-  ],
   "education": [
     {
       "institution": "The Peddie School",
@@ -53,15 +41,46 @@
       "startDate": "2018-9",
       "endDate": "2022-5",
       "courses": ["AP Calculus BC", "AP Physics C", "AP Computer Science A"]
+    },
+    {
+      "institution": "Emory University",
+      "location": "Atlanta, GA",
+      "url": "https://www.emory.edu",
+      "studyType": "B.S. in Mathematics and Computer Science",
+      "startDate": "2022-8",
+      "endDate": "2026-5",
+      "courses": [
+        "Linear Algebra",
+        "Probability and Statistics I/II",
+        "Data Structures and Algorithms",
+        "Analysis of Algorithms",
+        "Machine Learning",
+        "Data Mining"
+      ]
     }
   ],
+  "volunteer": [
+  {
+    "organization": "People's Climate March",
+    "location": "Zurich, Switzerland",
+    "position": "Lead Organizer",
+    "url": "https://example.com",
+    "startDate": "2014-04-01",
+    "endDate": "2015-07-01",
+    "summary": "Lead organizer for the New York City branch of the People's Climate March, the largest climate march in history.",
+    "highlights": ["Awarded 'Climate Hero' award by Greenpeace for my efforts organizing the march.", "Men of the year 2014 by Time magazine"]
+  }
+],
   "awards": [
     {
-      "title": "Nobel Prize in Physics",
-      "date": "1921-11-01",
-      "awarder": "Royal Swedish Academy of Sciences",
-      "url": "https://www.nobelprize.org/prizes/physics/1921/einstein/biographical/",
-      "summary": "The Nobel Prizes are five separate prizes that, according to Alfred Nobel's will of 1895, are awarded to 'those who, during the preceding year, have conferred the greatest benefit to humankind.'"
+      "title": "Computer Science Chair's Award for Academic Excellence",
+      "date": "2025",
+      "awarder": "Emory University Department of Computer Science"
+    },
+    {
+      "title": "Computer Science Award",
+      "date": "2024",
+      "awarder": "Oxford College of Emory Department of Computer Science"
     }
   ],
   "certificates": [
