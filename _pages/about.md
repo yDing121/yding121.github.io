@@ -12,7 +12,7 @@ profile:
     <p>Emory University</p>
     <p>Atlanta, GA 30322</p>
     <p>Department of</p>
-    <p>Computer Science</p> 
+    <p>Computer Science</p>
 
 selected_papers: false # includes a list of papers marked as "selected={true}"
 social: true # includes social icons at the bottom of the page
