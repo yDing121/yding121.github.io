@@ -2,8 +2,7 @@
 layout: fridge
 permalink: /fridge/
 title: fridge
-nav: true
-nav_order: 9
+nav: false
 entry_script: /assets/js/fridge/main.js
 ---
 

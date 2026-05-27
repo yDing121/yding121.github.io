@@ -10,4 +10,7 @@ children:
   - title: divider
   - title: blog
     permalink: /blog/
+  - title: divider
+  - title: fridge
+    permalink: /fridge/
 ---
