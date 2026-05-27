@@ -1,0 +1,17 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    function isAllowed() {
+      return request.auth != null
+        && request.auth.uid in ['RugOVEKFNMWscEAF3SJ1xONUFYf1', '1qdT6tgDJwR9HFrYxfiwObeS9ug2'];
+    }
+    match /blob-images/{userId}/{file=**} {
+      allow read: if isAllowed();
+      allow write: if isAllowed()
+        && request.auth.uid == userId
+        && request.resource.size < 5 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*');
+      allow delete: if false;
+    }
+  }
+}
