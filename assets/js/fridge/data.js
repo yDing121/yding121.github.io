@@ -10,20 +10,14 @@ import {
   doc,
   serverTimestamp,
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-import {
-  ref as storageRef,
-  uploadBytes,
-  getDownloadURL,
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+import { ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 import { db, storage, auth } from "./firebase-init.js";
 
 const COLORS = ["yellow", "pink", "blue", "green"];
 
 export async function listBlobs({ includeArchived = false } = {}) {
   const base = collection(db, "blobs");
-  const q = includeArchived
-    ? query(base, orderBy("createdAt", "desc"))
-    : query(base, where("archived", "==", false), orderBy("createdAt", "desc"));
+  const q = includeArchived ? query(base, orderBy("createdAt", "desc")) : query(base, where("archived", "==", false), orderBy("createdAt", "desc"));
   const snap = await getDocs(q);
   return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
 }

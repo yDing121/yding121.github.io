@@ -36,19 +36,45 @@ export function openReadModal(blob, { onEdit, onArchive } = {}) {
   const actions = [el("button", { onclick: close }, "close")];
   if (isAuthor) {
     actions.unshift(
-      el("button", { class: blob.archived ? "" : "danger", onclick: () => { close(); onArchive && onArchive(blob); } },
-         blob.archived ? "unhide" : "hide"),
-      el("button", { class: "primary", onclick: () => { onEdit && onEdit(blob); } }, "edit"),
+      el(
+        "button",
+        {
+          class: blob.archived ? "" : "danger",
+          onclick: () => {
+            close();
+            onArchive && onArchive(blob);
+          },
+        },
+        blob.archived ? "unhide" : "hide"
+      ),
+      el(
+        "button",
+        {
+          class: "primary",
+          onclick: () => {
+            onEdit && onEdit(blob);
+          },
+        },
+        "edit"
+      )
     );
   }
 
-  const modal = el("div", { class: "fridge-modal" }, [
-    ...children,
-    el("div", { class: "actions" }, actions),
-  ]);
-  const backdrop = el("div", { class: "fridge-modal-backdrop", onclick: (e) => { if (e.target === backdrop) close(); } }, [modal]);
+  const modal = el("div", { class: "fridge-modal" }, [...children, el("div", { class: "actions" }, actions)]);
+  const backdrop = el(
+    "div",
+    {
+      class: "fridge-modal-backdrop",
+      onclick: (e) => {
+        if (e.target === backdrop) close();
+      },
+    },
+    [modal]
+  );
   root.appendChild(backdrop);
 
-  function close() { root.innerHTML = ""; }
+  function close() {
+    root.innerHTML = "";
+  }
   return close;
 }

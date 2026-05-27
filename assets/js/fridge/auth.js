@@ -1,9 +1,5 @@
 // assets/js/fridge/auth.js
-import {
-  signInWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged,
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { auth } from "./firebase-init.js";
 import { ALLOWED_UIDS } from "./firebase-config.js";
 
@@ -36,9 +32,7 @@ export function bindLoginForm(formId, errorId) {
         await signOut(auth);
       }
     } catch (err) {
-      errorEl.textContent = err.code === "auth/invalid-credential"
-        ? "wrong email or password"
-        : err.message;
+      errorEl.textContent = err.code === "auth/invalid-credential" ? "wrong email or password" : err.message;
     }
   });
 }

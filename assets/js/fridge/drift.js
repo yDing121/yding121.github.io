@@ -11,12 +11,14 @@ function preview(blob) {
 }
 
 function escapeHtml(s) {
-  return String(s).replace(/[&<>"']/g, (c) =>
-    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]),
-  );
+  return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 }
-function escapeAttr(s) { return escapeHtml(s); }
-function truncate(s, n) { return s.length > n ? s.slice(0, n - 1) + "…" : s; }
+function escapeAttr(s) {
+  return escapeHtml(s);
+}
+function truncate(s, n) {
+  return s.length > n ? s.slice(0, n - 1) + "…" : s;
+}
 
 export function startDrift(stageEl, blobs, onClick) {
   stageEl.innerHTML = "";
@@ -30,7 +32,8 @@ export function startDrift(stageEl, blobs, onClick) {
     stageEl.appendChild(el);
     const r = stageRect();
     return {
-      el, blob,
+      el,
+      blob,
       x: Math.random() * Math.max(1, r.width - STICKY_W),
       y: Math.random() * Math.max(1, r.height - STICKY_H),
       vx: (Math.random() - 0.5) * 0.4,
@@ -53,10 +56,22 @@ export function startDrift(stageEl, blobs, onClick) {
         it.vy = Math.max(-0.5, Math.min(0.5, it.vy));
         it.x += it.vx;
         it.y += it.vy;
-        if (it.x < 0) { it.x = 0; it.vx = Math.abs(it.vx); }
-        if (it.x > maxX) { it.x = maxX; it.vx = -Math.abs(it.vx); }
-        if (it.y < 0) { it.y = 0; it.vy = Math.abs(it.vy); }
-        if (it.y > maxY) { it.y = maxY; it.vy = -Math.abs(it.vy); }
+        if (it.x < 0) {
+          it.x = 0;
+          it.vx = Math.abs(it.vx);
+        }
+        if (it.x > maxX) {
+          it.x = maxX;
+          it.vx = -Math.abs(it.vx);
+        }
+        if (it.y < 0) {
+          it.y = 0;
+          it.vy = Math.abs(it.vy);
+        }
+        if (it.y > maxY) {
+          it.y = maxY;
+          it.vy = -Math.abs(it.vy);
+        }
         it.el.style.left = it.x + "px";
         it.el.style.top = it.y + "px";
       }
@@ -66,8 +81,15 @@ export function startDrift(stageEl, blobs, onClick) {
   tick();
 
   return {
-    stop() { running = false; stageEl.innerHTML = ""; },
-    pause() { paused = true; },
-    resume() { paused = false; },
+    stop() {
+      running = false;
+      stageEl.innerHTML = "";
+    },
+    pause() {
+      paused = true;
+    },
+    resume() {
+      paused = false;
+    },
   };
 }

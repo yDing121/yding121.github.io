@@ -23,7 +23,10 @@ async function render() {
     li.addEventListener("click", () => {
       openReadModal(b, {
         onEdit: (x) => openEditModal(x, { onSaved: render }),
-        onArchive: async (x) => { await toggleArchive(x); await render(); },
+        onArchive: async (x) => {
+          await toggleArchive(x);
+          await render();
+        },
       });
     });
     listEl.appendChild(li);
@@ -34,9 +37,7 @@ async function render() {
 }
 
 function escapeHtml(s) {
-  return String(s).replace(/[&<>"']/g, (c) =>
-    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]),
-  );
+  return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 }
 
 showHidden.addEventListener("change", render);
@@ -51,5 +52,5 @@ watchAuth(
     loginEl.classList.remove("hidden");
     archiveEl.classList.add("hidden");
     listEl.innerHTML = "";
-  },
+  }
 );

@@ -30,7 +30,10 @@ export function openSubmitModal({ onCreated } = {}) {
 
   fileInput.addEventListener("change", () => {
     const f = fileInput.files[0];
-    if (!f) { preview.style.display = "none"; return; }
+    if (!f) {
+      preview.style.display = "none";
+      return;
+    }
     if (f.size > 5 * 1024 * 1024) {
       error.textContent = "image must be under 5MB";
       fileInput.value = "";
@@ -75,9 +78,23 @@ export function openSubmitModal({ onCreated } = {}) {
 
   const modal = el("div", { class: "fridge-modal" }, [
     el("h3", {}, "new note"),
-    textInput, linkInput, emojiInput, fileInput, preview, error,
+    textInput,
+    linkInput,
+    emojiInput,
+    fileInput,
+    preview,
+    error,
     el("div", { class: "actions" }, [cancelBtn, submitBtn]),
   ]);
-  const backdrop = el("div", { class: "fridge-modal-backdrop", onclick: (e) => { if (e.target === backdrop) close(); } }, [modal]);
+  const backdrop = el(
+    "div",
+    {
+      class: "fridge-modal-backdrop",
+      onclick: (e) => {
+        if (e.target === backdrop) close();
+      },
+    },
+    [modal]
+  );
   root.appendChild(backdrop);
 }

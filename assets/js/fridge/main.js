@@ -33,11 +33,17 @@ function applyCap() {
     drift && drift.pause();
     openReadModal(blob, {
       onEdit: (b) => openEditModal(b, { onSaved: refresh }),
-      onArchive: async (b) => { await toggleArchive(b); await refresh(); },
+      onArchive: async (b) => {
+        await toggleArchive(b);
+        await refresh();
+      },
     });
     const root = document.getElementById("fridge-modal-root");
     const obs = new MutationObserver(() => {
-      if (root.children.length === 0) { drift && drift.resume(); obs.disconnect(); }
+      if (root.children.length === 0) {
+        drift && drift.resume();
+        obs.disconnect();
+      }
     });
     obs.observe(root, { childList: true });
   });
@@ -50,7 +56,10 @@ document.getElementById("fridge-new").addEventListener("click", () => {
   openSubmitModal({ onCreated: refresh });
   const root = document.getElementById("fridge-modal-root");
   const obs = new MutationObserver(() => {
-    if (root.children.length === 0) { drift && drift.resume(); obs.disconnect(); }
+    if (root.children.length === 0) {
+      drift && drift.resume();
+      obs.disconnect();
+    }
   });
   obs.observe(root, { childList: true });
 });
@@ -67,7 +76,10 @@ watchAuth(
   () => {
     loginEl.classList.remove("hidden");
     boardEl.classList.add("hidden");
-    if (drift) { drift.stop(); drift = null; }
+    if (drift) {
+      drift.stop();
+      drift = null;
+    }
     allBlobs = [];
-  },
+  }
 );

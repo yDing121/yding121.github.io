@@ -44,17 +44,30 @@ export function openEditModal(blob, { onSaved } = {}) {
       error.textContent = err.message || "failed to save";
     }
   }
-  function close() { root.innerHTML = ""; }
+  function close() {
+    root.innerHTML = "";
+  }
 
   const note = el("p", { style: "font-size:12px;color:#888;" }, "image can't be edited in v1");
   const modal = el("div", { class: "fridge-modal" }, [
     el("h3", {}, "edit note"),
-    textInput, linkInput, emojiInput,
+    textInput,
+    linkInput,
+    emojiInput,
     blob.imageUrl ? note : null,
     error,
     el("div", { class: "actions" }, [cancelBtn, saveBtn]),
   ]);
-  const backdrop = el("div", { class: "fridge-modal-backdrop", onclick: (e) => { if (e.target === backdrop) close(); } }, [modal]);
+  const backdrop = el(
+    "div",
+    {
+      class: "fridge-modal-backdrop",
+      onclick: (e) => {
+        if (e.target === backdrop) close();
+      },
+    },
+    [modal]
+  );
   root.appendChild(backdrop);
 }
 

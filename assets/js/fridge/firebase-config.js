@@ -10,7 +10,4 @@ export const firebaseConfig = {
 };
 
 // The only two UIDs allowed to use the fridge.
-export const ALLOWED_UIDS = [
-  "RugOVEKFNMWscEAF3SJ1xONUFYf1",
-  "1qdT6tgDJwR9HFrYxfiwObeS9ug2",
-];
+export const ALLOWED_UIDS = ["RugOVEKFNMWscEAF3SJ1xONUFYf1", "1qdT6tgDJwR9HFrYxfiwObeS9ug2"];
