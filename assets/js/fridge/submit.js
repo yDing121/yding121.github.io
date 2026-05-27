@@ -68,7 +68,10 @@ export function openSubmitModal({ onCreated } = {}) {
     }
   }
 
-  function close() { root.innerHTML = ""; }
+  function close() {
+    if (preview.src && preview.src.startsWith("blob:")) URL.revokeObjectURL(preview.src);
+    root.innerHTML = "";
+  }
 
   const modal = el("div", { class: "fridge-modal" }, [
     el("h3", {}, "new note"),

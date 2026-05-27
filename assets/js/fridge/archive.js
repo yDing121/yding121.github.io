@@ -2,8 +2,7 @@
 import { watchAuth, bindLoginForm } from "./auth.js";
 import { listBlobs } from "./data.js";
 import { openReadModal } from "./modal.js";
-import { openEditModal } from "./edit.js";
-import { toggleArchive } from "./edit.js";
+import { openEditModal, toggleArchive } from "./edit.js";
 
 const loginEl = document.getElementById("fridge-login");
 const archiveEl = document.getElementById("fridge-archive");

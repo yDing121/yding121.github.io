@@ -36,9 +36,9 @@ export function openReadModal(blob, { onEdit, onArchive } = {}) {
   const actions = [el("button", { onclick: close }, "close")];
   if (isAuthor) {
     actions.unshift(
-      el("button", { class: blob.archived ? "" : "danger", onclick: () => { onArchive && onArchive(blob); close(); } },
+      el("button", { class: blob.archived ? "" : "danger", onclick: () => { close(); onArchive && onArchive(blob); } },
          blob.archived ? "unhide" : "hide"),
-      el("button", { class: "primary", onclick: () => { onEdit && onEdit(blob); close(); } }, "edit"),
+      el("button", { class: "primary", onclick: () => { onEdit && onEdit(blob); } }, "edit"),
     );
   }
 
