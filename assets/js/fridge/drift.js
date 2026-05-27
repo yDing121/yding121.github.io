@@ -6,7 +6,11 @@ function preview(blob) {
   const parts = [];
   if (blob.emoji) parts.push(`<div class="emoji">${escapeHtml(blob.emoji)}</div>`);
   if (blob.imageUrl) parts.push(`<img src="${escapeAttr(blob.imageUrl)}" alt="">`);
-  if (blob.text) parts.push(`<div class="text">${escapeHtml(truncate(blob.text, 80))}</div>`);
+  if (blob.text) {
+    // Image-bearing stickies prioritize the photo — keep text short. CSS line-clamps anything past.
+    const limit = blob.imageUrl ? 30 : 120;
+    parts.push(`<div class="text">${escapeHtml(truncate(blob.text, limit))}</div>`);
+  }
   return parts.join("");
 }
 
