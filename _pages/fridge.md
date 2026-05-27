@@ -19,8 +19,8 @@ entry_script: /assets/js/fridge/main.js
   <div id="fridge-toolbar" class="fridge-toolbar">
     <button id="fridge-new" type="button">+ new note</button>
     <label class="cap-label">
-      showing <span id="fridge-cap-value">20</span>
-      <input id="fridge-cap" type="range" min="5" max="60" value="20" />
+      showing <span id="fridge-cap-value">5</span>
+      <input id="fridge-cap" type="range" min="1" max="20" value="5" />
     </label>
     <a id="fridge-archive-link" href="/fridge/archive/">archive →</a>
     <button id="fridge-signout" type="button">sign out</button>
