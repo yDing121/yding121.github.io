@@ -101,18 +101,30 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  flex-shrink: 0;
+  min-width: 0; /* allow shrinking below content width */
 }
 .cap-label input[type="range"] {
   width: 110px;
+  min-width: 60px;
+  flex: 0 1 110px;
 }
-@media (max-width: 480px) {
+.fridge-toolbar > * {
+  flex-shrink: 1;
+  min-width: 0;
+}
+@media (max-width: 600px) {
   .fridge-toolbar {
     column-gap: 8px;
     font-size: 0.85em;
   }
+  .fridge-toolbar button,
+  .fridge-toolbar a {
+    padding: 6px 8px;
+    min-height: 32px;
+  }
   .cap-label input[type="range"] {
-    width: 80px;
+    width: 70px;
+    flex: 0 0 70px;
   }
 }
 
