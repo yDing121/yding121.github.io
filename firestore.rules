@@ -1,0 +1,19 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAllowed() {
+      return request.auth != null
+        && request.auth.uid in ['RugOVEKFNMWscEAF3SJ1xONUFYf1', '1qdT6tgDJwR9HFrYxfiwObeS9ug2'];
+    }
+    match /blobs/{blobId} {
+      allow read: if isAllowed();
+      allow create: if isAllowed()
+        && request.resource.data.authorUid == request.auth.uid
+        && request.resource.data.archived == false;
+      allow update: if isAllowed()
+        && resource.data.authorUid == request.auth.uid
+        && request.resource.data.authorUid == resource.data.authorUid;
+      allow delete: if false;
+    }
+  }
+}

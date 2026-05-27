@@ -72,7 +72,14 @@ ninja.data = [{
               handler: () => {
                 window.location.href = "/blog/";
               },
-            },{id: "post-machine-learning-101",
+            },{id: "nav-fridge",
+          title: "fridge",
+          description: "",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/fridge/";
+          },
+        },{id: "post-machine-learning-101",
         
           title: "Machine Learning 101",
         
