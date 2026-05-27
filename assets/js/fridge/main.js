@@ -16,7 +16,12 @@ let drift = null;
 let allBlobs = [];
 
 async function refresh() {
-  allBlobs = await listBlobs();
+  try {
+    allBlobs = await listBlobs();
+  } catch (err) {
+    console.error("fridge: failed to load blobs", err);
+    allBlobs = [];
+  }
   applyCap();
 }
 
