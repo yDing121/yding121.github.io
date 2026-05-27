@@ -1,6 +1,31 @@
 /* Reset/scaffold */
 .fridge-body {
   margin: 0;
+  /* fridge always uses a light/warm palette regardless of site dark mode */
+  color-scheme: light;
+  color: #333;
+}
+/* Force dark text on every fridge element so the site's dark theme can't bleed in */
+.fridge-body .fridge-toolbar,
+.fridge-body .fridge-toolbar button,
+.fridge-body .fridge-toolbar a,
+.fridge-body .sticky,
+.fridge-body .fridge-modal,
+.fridge-body .fridge-modal button,
+.fridge-body .fridge-modal input,
+.fridge-body .fridge-modal textarea,
+.fridge-body .fridge-modal a,
+.fridge-body .fridge-login input,
+.fridge-body .fridge-login button,
+.fridge-body .archive-list li,
+.fridge-body .archive-list li * {
+  color: #333;
+}
+.fridge-body .fridge-modal button.primary {
+  color: #fff;
+}
+.fridge-body .fridge-modal button.danger {
+  color: #c0392b;
 }
 .fridge-root {
   min-height: calc(100vh - 60px);
@@ -124,6 +149,7 @@
   font-size: 14px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  background: #fff;
 }
 
 /* Modal */
@@ -155,6 +181,7 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   font-family: inherit;
+  background: #fff;
 }
 .fridge-modal textarea {
   min-height: 80px;
@@ -199,13 +226,35 @@
 }
 .archive-list li {
   border-left: 3px solid #ddd;
-  padding: 8px 12px;
+  padding: 0;
   margin-bottom: 8px;
   background: #fff;
-  cursor: pointer;
+  display: flex;
+  align-items: stretch;
 }
 .archive-list li.archived {
-  opacity: 0.5;
+  opacity: 0.65;
+}
+.archive-body {
+  flex: 1;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+.archive-action {
+  border: none;
+  border-left: 1px solid #eee;
+  background: #fff;
+  padding: 0 14px;
+  cursor: pointer;
+  font-size: 0.85em;
+  color: #4a90e2;
+}
+.archive-action:hover {
+  background: #f5faff;
+}
+.archive-action:disabled {
+  color: #999;
+  cursor: default;
 }
 .archive-list .date {
   font-size: 0.8em;

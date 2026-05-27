@@ -3,6 +3,7 @@ import { watchAuth, bindLoginForm } from "./auth.js";
 import { listBlobs } from "./data.js";
 import { openReadModal } from "./modal.js";
 import { openEditModal, toggleArchive } from "./edit.js";
+import { auth } from "./firebase-init.js";
 
 const loginEl = document.getElementById("fridge-login");
 const archiveEl = document.getElementById("fridge-archive");
@@ -19,8 +20,10 @@ async function render() {
     if (b.archived) li.classList.add("archived");
     const date = b.createdAt && b.createdAt.toDate ? b.createdAt.toDate().toLocaleDateString() : "";
     const preview = (b.text || b.emoji || (b.imageUrl ? "[image]" : "(empty)")).slice(0, 80);
-    li.innerHTML = `<div class="date">${date}${b.archived ? " · hidden" : ""}</div><div>${escapeHtml(preview)}</div>`;
-    li.addEventListener("click", () => {
+    const body = document.createElement("div");
+    body.className = "archive-body";
+    body.innerHTML = `<div class="date">${date}${b.archived ? " · hidden" : ""}</div><div>${escapeHtml(preview)}</div>`;
+    body.addEventListener("click", () => {
       openReadModal(b, {
         onEdit: (x) => openEditModal(x, { onSaved: render }),
         onArchive: async (x) => {
@@ -29,6 +32,21 @@ async function render() {
         },
       });
     });
+    li.appendChild(body);
+    const isAuthor = auth.currentUser && auth.currentUser.uid === b.authorUid;
+    if (isAuthor && b.archived) {
+      const unhideBtn = document.createElement("button");
+      unhideBtn.type = "button";
+      unhideBtn.className = "archive-action";
+      unhideBtn.textContent = "unhide";
+      unhideBtn.addEventListener("click", async (e) => {
+        e.stopPropagation();
+        unhideBtn.disabled = true;
+        await toggleArchive(b);
+        await render();
+      });
+      li.appendChild(unhideBtn);
+    }
     listEl.appendChild(li);
   }
   if (blobs.length === 0) {
