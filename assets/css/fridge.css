@@ -42,7 +42,7 @@
   color: #888;
 }
 .fridge-root {
-  min-height: calc(100vh - 60px);
+  min-height: calc(100dvh - 60px);
   position: relative;
 }
 .hidden {
@@ -59,7 +59,7 @@
   background: #f3efe7;
   background-image: radial-gradient(circle at 20% 30%, rgba(180, 140, 80, 0.05) 0, transparent 40%),
     radial-gradient(circle at 80% 70%, rgba(180, 140, 80, 0.05) 0, transparent 40%);
-  min-height: calc(100vh - 60px);
+  min-height: calc(100dvh - 60px);
   position: relative;
   overflow: hidden;
 }
@@ -72,7 +72,9 @@
   right: 10px;
   z-index: 10;
   display: flex;
-  gap: 14px;
+  flex-wrap: wrap;
+  column-gap: 14px;
+  row-gap: 6px;
   align-items: center;
   background: rgba(255, 255, 255, 0.7);
   padding: 8px 12px;
@@ -84,16 +86,32 @@
 .fridge-toolbar a {
   background: none;
   border: 1px solid #ccc;
-  padding: 4px 10px;
+  padding: 6px 12px;
   border-radius: 4px;
   cursor: pointer;
   color: #333;
   text-decoration: none;
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
 }
 .cap-label {
   display: flex;
   align-items: center;
   gap: 6px;
+  flex-shrink: 0;
+}
+.cap-label input[type="range"] {
+  width: 110px;
+}
+@media (max-width: 480px) {
+  .fridge-toolbar {
+    column-gap: 8px;
+    font-size: 0.85em;
+  }
+  .cap-label input[type="range"] {
+    width: 80px;
+  }
 }
 
 /* Stage (drift area) */
@@ -166,19 +184,22 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: calc(100vh - 60px);
+  min-height: calc(100dvh - 60px);
   background: #f3efe7;
+  padding: 16px;
+  box-sizing: border-box;
 }
 .fridge-login form {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  width: 260px;
+  width: 100%;
+  max-width: 320px;
 }
 .fridge-login input,
 .fridge-login button {
-  padding: 8px 10px;
-  font-size: 14px;
+  padding: 10px 12px;
+  font-size: 16px; /* 16px prevents iOS auto-zoom on focus */
   border: 1px solid #ccc;
   border-radius: 4px;
   background: #fff;
@@ -200,7 +221,7 @@
   padding: 24px;
   max-width: 500px;
   width: 90%;
-  max-height: 80vh;
+  max-height: 85dvh;
   overflow: auto;
 }
 .fridge-modal textarea,
@@ -208,11 +229,12 @@
 .fridge-modal input[type="url"] {
   width: 100%;
   box-sizing: border-box;
-  padding: 8px;
+  padding: 10px;
   margin-bottom: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
   font-family: inherit;
+  font-size: 16px; /* prevents iOS zoom on focus */
   background: #fff;
 }
 .fridge-modal textarea {
@@ -221,16 +243,18 @@
 }
 .fridge-modal .actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
   justify-content: flex-end;
   margin-top: 12px;
 }
 .fridge-modal button {
-  padding: 6px 14px;
+  padding: 8px 14px;
   border: 1px solid #ccc;
   border-radius: 4px;
   cursor: pointer;
   background: #fff;
+  min-height: 36px;
 }
 .fridge-modal button.primary {
   background: #4a90e2;
@@ -243,7 +267,7 @@
 
 /* Archive list */
 .fridge-archive {
-  padding: 80px 24px 40px;
+  padding: 80px 16px 40px;
   max-width: 700px;
   margin: 0 auto;
 }
