@@ -19,7 +19,8 @@ async function render() {
     const li = document.createElement("li");
     if (b.archived) li.classList.add("archived");
     const date = b.createdAt && b.createdAt.toDate ? b.createdAt.toDate().toLocaleDateString() : "";
-    const preview = (b.text || b.emoji || (b.imageUrl ? "[image]" : "(empty)")).slice(0, 80);
+    const raw = b.text || b.emoji || (b.imageUrl ? "[image]" : "(empty)");
+    const preview = raw.length > 80 ? raw.slice(0, 79) + "…" : raw;
     const body = document.createElement("div");
     body.className = "archive-body";
     body.innerHTML = `<div class="date">${date}${b.archived ? " · hidden" : ""}</div><div>${escapeHtml(preview)}</div>`;
