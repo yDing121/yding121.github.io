@@ -24,6 +24,11 @@ function applyCap() {
   const cap = parseInt(capInput.value, 10);
   capValue.textContent = String(cap);
   if (drift) drift.stop();
+  if (allBlobs.length === 0) {
+    stageEl.innerHTML = `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#888;font-style:italic;">nothing on the fridge yet — click "+ new note"</div>`;
+    drift = null;
+    return;
+  }
   drift = startDrift(stageEl, pickRandom(allBlobs, cap), (blob) => {
     drift && drift.pause();
     openReadModal(blob, {
