@@ -3,6 +3,7 @@ import { watchAuth, bindLoginForm, bindSignOut } from "./auth.js";
 import { listBlobs, pickRandom } from "./data.js";
 import { startDrift } from "./drift.js";
 import { openReadModal } from "./modal.js";
+import { openSubmitModal } from "./submit.js";
 
 const loginEl = document.getElementById("fridge-login");
 const boardEl = document.getElementById("fridge-board");
@@ -37,6 +38,16 @@ function applyCap() {
 }
 
 capInput.addEventListener("input", applyCap);
+
+document.getElementById("fridge-new").addEventListener("click", () => {
+  if (drift) drift.pause();
+  openSubmitModal({ onCreated: refresh });
+  const root = document.getElementById("fridge-modal-root");
+  const obs = new MutationObserver(() => {
+    if (root.children.length === 0) { drift && drift.resume(); obs.disconnect(); }
+  });
+  obs.observe(root, { childList: true });
+});
 
 bindLoginForm("fridge-login-form", "fridge-login-error");
 bindSignOut("fridge-signout");
