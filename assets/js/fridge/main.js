@@ -4,6 +4,7 @@ import { listBlobs, pickRandom } from "./data.js";
 import { startDrift } from "./drift.js";
 import { openReadModal } from "./modal.js";
 import { openSubmitModal } from "./submit.js";
+import { openEditModal, toggleArchive } from "./edit.js";
 
 const loginEl = document.getElementById("fridge-login");
 const boardEl = document.getElementById("fridge-board");
@@ -26,8 +27,8 @@ function applyCap() {
   drift = startDrift(stageEl, pickRandom(allBlobs, cap), (blob) => {
     drift && drift.pause();
     openReadModal(blob, {
-      onEdit: (b) => console.log("TODO edit", b.id),
-      onArchive: async (b) => { /* wired in Task 9 */ },
+      onEdit: (b) => openEditModal(b, { onSaved: refresh }),
+      onArchive: async (b) => { await toggleArchive(b); await refresh(); },
     });
     const root = document.getElementById("fridge-modal-root");
     const obs = new MutationObserver(() => {
