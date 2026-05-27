@@ -2,13 +2,16 @@
 ---
 <!doctype html>
 <html lang="{{ site.lang }}">
-  {% include head.liquid %}
-  <body class="fridge-body">
+  <head>
+    {% include head.liquid %}
+    <link rel="stylesheet" href="{{ '/assets/css/fridge.css' | relative_url }}" />
+  </head>
+  <body class="fridge-body {% if site.navbar_fixed %}fixed-top-nav{% endif %}">
     {% include header.liquid %}
     <main id="fridge-root" class="fridge-root">
       {{ content }}
     </main>
-    <link rel="stylesheet" href="{{ '/assets/css/fridge.css' | relative_url }}">
+    {% include scripts.liquid %}
     <script type="module" src="{{ page.entry_script | relative_url }}"></script>
   </body>
 </html>

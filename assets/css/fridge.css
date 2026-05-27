@@ -5,7 +5,6 @@
 .fridge-root {
   min-height: calc(100vh - 60px);
   position: relative;
-  padding-top: 60px;
 }
 .hidden {
   display: none !important;
