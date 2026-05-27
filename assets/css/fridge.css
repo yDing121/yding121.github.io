@@ -5,7 +5,9 @@
   color-scheme: light;
   color: #333;
 }
-/* Force dark text on every fridge element + descendants so the site's dark theme can't bleed in */
+/* Force dark text on every fridge element + descendants so the site's dark theme can't bleed in.
+   !important is used because al-folio defines `color: var(--global-text-color)` on bare
+   elements (p, div, etc.) which would otherwise win via CSS-variable cascading. */
 .fridge-body .fridge-toolbar,
 .fridge-body .fridge-toolbar *,
 .fridge-body .sticky,
@@ -16,20 +18,20 @@
 .fridge-body .fridge-login *,
 .fridge-body .archive-list,
 .fridge-body .archive-list * {
-  color: #333;
+  color: #333 !important;
 }
 /* Specific in-modal exceptions */
 .fridge-body .fridge-modal button.primary,
 .fridge-body .fridge-modal button.primary * {
-  color: #fff;
+  color: #fff !important;
 }
 .fridge-body .fridge-modal button.danger,
 .fridge-body .fridge-modal button.danger * {
-  color: #c0392b;
+  color: #c0392b !important;
 }
 .fridge-body .fridge-modal a,
 .fridge-body .fridge-modal a * {
-  color: #4a90e2;
+  color: #4a90e2 !important;
 }
 /* Placeholders and faint metadata */
 .fridge-body .fridge-modal input::placeholder,
