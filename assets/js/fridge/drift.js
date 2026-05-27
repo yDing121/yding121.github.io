@@ -24,9 +24,21 @@ function truncate(s, n) {
   return s.length > n ? s.slice(0, n - 1) + "…" : s;
 }
 
+const BOTTOM_MARGIN = 20;
+const TOOLBAR_GAP = 10;
+
 export function startDrift(stageEl, blobs, onClick) {
   stageEl.innerHTML = "";
   const stageRect = () => stageEl.getBoundingClientRect();
+  // Measure the toolbar so stickies don't drift behind it. Falls back to 60px if missing.
+  const topMargin = () => {
+    const tb = document.getElementById("fridge-toolbar");
+    if (!tb) return 60;
+    const tbR = tb.getBoundingClientRect();
+    const sR = stageRect();
+    return Math.max(0, tbR.bottom - sR.top + TOOLBAR_GAP);
+  };
+
   const items = blobs.map((blob) => {
     const el = document.createElement("div");
     el.className = `sticky ${blob.color || "yellow"}`;
@@ -35,11 +47,12 @@ export function startDrift(stageEl, blobs, onClick) {
     el.addEventListener("click", () => onClick(blob));
     stageEl.appendChild(el);
     const r = stageRect();
+    const top = topMargin();
     return {
       el,
       blob,
       x: Math.random() * Math.max(1, r.width - STICKY_W),
-      y: Math.random() * Math.max(1, r.height - STICKY_H),
+      y: top + Math.random() * Math.max(1, r.height - STICKY_H - top - BOTTOM_MARGIN),
       vx: (Math.random() - 0.5) * 0.4,
       vy: (Math.random() - 0.5) * 0.4,
     };
@@ -51,8 +64,9 @@ export function startDrift(stageEl, blobs, onClick) {
     if (!running) return;
     if (!paused) {
       const r = stageRect();
+      const top = topMargin();
       const maxX = Math.max(1, r.width - STICKY_W);
-      const maxY = Math.max(1, r.height - STICKY_H);
+      const maxY = Math.max(top, r.height - STICKY_H - BOTTOM_MARGIN);
       for (const it of items) {
         it.vx += (Math.random() - 0.5) * 0.04;
         it.vy += (Math.random() - 0.5) * 0.04;
@@ -68,8 +82,8 @@ export function startDrift(stageEl, blobs, onClick) {
           it.x = maxX;
           it.vx = -Math.abs(it.vx);
         }
-        if (it.y < 0) {
-          it.y = 0;
+        if (it.y < top) {
+          it.y = top;
           it.vy = Math.abs(it.vy);
         }
         if (it.y > maxY) {
