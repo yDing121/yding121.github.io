@@ -9,8 +9,9 @@ import {
   updateDoc,
   doc,
   serverTimestamp,
+  deleteDoc,
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-import { ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+import { ref as storageRef, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 import { db, storage, auth } from "./firebase-init.js";
 
 const COLORS = [
@@ -75,4 +76,69 @@ export function pickRandom(blobs, cap) {
     [copy[i], copy[j]] = [copy[j], copy[i]];
   }
   return copy.slice(0, cap);
+}
+
+// ── Wallpapers ──────────────────────────────────────────────────────────────
+
+export async function listWallpapers() {
+  const snap = await getDocs(query(collection(db, "wallpapers"), orderBy("createdAt", "desc")));
+  return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+}
+
+/**
+ * Upload a wallpaper image to Storage and create its Firestore metadata doc.
+ * Reads natural dimensions client-side via an <img> element to compute orientation.
+ * Returns the created wallpaper { id, url, path, width, height, orientation }.
+ */
+export async function uploadWallpaper(file) {
+  const user = auth.currentUser;
+  if (!user) throw new Error("not signed in");
+  if (!file) throw new Error("no file");
+  if (file.size > 5 * 1024 * 1024) throw new Error("image must be under 5MB");
+
+  // Measure natural dimensions before uploading.
+  const { width, height } = await new Promise((resolve, reject) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      resolve({ width: img.naturalWidth, height: img.naturalHeight });
+    };
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error("could not read image dimensions"));
+    };
+    img.src = url;
+  });
+  const orientation = width >= height ? "landscape" : "portrait";
+
+  const path = `fridge-wallpapers/${user.uid}/${Date.now()}-${file.name}`;
+  const ref = storageRef(storage, path);
+  await uploadBytes(ref, file);
+  const url = await getDownloadURL(ref);
+
+  const docRef = await addDoc(collection(db, "wallpapers"), {
+    uploaderUid: user.uid,
+    url,
+    path,
+    width,
+    height,
+    orientation,
+    createdAt: serverTimestamp(),
+  });
+  return { id: docRef.id, uploaderUid: user.uid, url, path, width, height, orientation };
+}
+
+/**
+ * Delete a wallpaper: removes the Storage object then the Firestore doc.
+ * Storage delete failure is non-fatal (object may already be gone).
+ */
+export async function deleteWallpaper(wallpaper) {
+  if (!wallpaper || !wallpaper.id) throw new Error("no wallpaper");
+  try {
+    await deleteObject(storageRef(storage, wallpaper.path));
+  } catch (err) {
+    console.warn("wallpaper: storage delete failed (continuing)", err);
+  }
+  await deleteDoc(doc(db, "wallpapers", wallpaper.id));
 }
