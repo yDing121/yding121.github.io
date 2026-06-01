@@ -5,6 +5,8 @@ import { startDrift } from "./drift.js";
 import { openReadModal } from "./modal.js";
 import { openSubmitModal } from "./submit.js";
 import { openEditModal, toggleArchive } from "./edit.js";
+import { initWallpaper, shuffleWallpaper } from "./wallpaper.js";
+import { openWallpapersModal } from "./wallpapers-modal.js";
 
 const loginEl = document.getElementById("fridge-login");
 const boardEl = document.getElementById("fridge-board");
@@ -69,6 +71,23 @@ document.getElementById("fridge-new").addEventListener("click", () => {
   obs.observe(root, { childList: true });
 });
 
+document.getElementById("fridge-shuffle-wallpaper").addEventListener("click", () => {
+  shuffleWallpaper();
+});
+
+document.getElementById("fridge-wallpapers").addEventListener("click", () => {
+  if (drift) drift.pause();
+  openWallpapersModal();
+  const root = document.getElementById("fridge-modal-root");
+  const obs = new MutationObserver(() => {
+    if (root.children.length === 0) {
+      drift && drift.resume();
+      obs.disconnect();
+    }
+  });
+  obs.observe(root, { childList: true });
+});
+
 bindLoginForm("fridge-login-form", "fridge-login-error");
 bindSignOut("fridge-signout");
 
@@ -76,6 +95,7 @@ watchAuth(
   async () => {
     loginEl.classList.add("hidden");
     boardEl.classList.remove("hidden");
+    initWallpaper(boardEl);
     await refresh();
   },
   () => {
