@@ -64,10 +64,12 @@ function clearCache(orientation) {
 function paint(url) {
   if (!boardElRef) return;
   if (url) {
-    boardElRef.style.backgroundImage = `url("${url.replace(/"/g, '\\"')}")`;
+    // Escape `"` and `\` so the URL is safe to interpolate inside a CSS url("…") string.
+    const escaped = url.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+    boardElRef.style.setProperty("--fridge-wallpaper", `url("${escaped}")`);
     boardElRef.classList.add("has-wallpaper");
   } else {
-    boardElRef.style.backgroundImage = "";
+    boardElRef.style.removeProperty("--fridge-wallpaper");
     boardElRef.classList.remove("has-wallpaper");
   }
 }
