@@ -13,7 +13,10 @@ import {
 import { ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 import { db, storage, auth } from "./firebase-init.js";
 
-const COLORS = ["yellow", "pink", "blue", "green"];
+const COLORS = [
+  "yellow", "pink", "blue", "green",
+  "peach", "lavender", "mint", "lemon", "sky", "coral",
+];
 
 export async function listBlobs({ includeArchived = false } = {}) {
   const base = collection(db, "blobs");

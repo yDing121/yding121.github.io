@@ -168,6 +168,24 @@
 .sticky.green {
   background: #c8f4c8;
 }
+.sticky.peach {
+  background: #ffd6b0;
+}
+.sticky.lavender {
+  background: #e0c8ff;
+}
+.sticky.mint {
+  background: #c8f0e0;
+}
+.sticky.lemon {
+  background: #fff3b0;
+}
+.sticky.sky {
+  background: #c8e8f8;
+}
+.sticky.coral {
+  background: #ffb8b0;
+}
 .sticky img {
   width: 100%;
   height: 75px;
