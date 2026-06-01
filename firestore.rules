@@ -15,5 +15,12 @@ service cloud.firestore {
         && request.resource.data.authorUid == resource.data.authorUid;
       allow delete: if false;
     }
+    match /wallpapers/{wallpaperId} {
+      allow read: if isAllowed();
+      allow create: if isAllowed()
+        && request.resource.data.uploaderUid == request.auth.uid;
+      allow update: if false;
+      allow delete: if isAllowed();
+    }
   }
 }

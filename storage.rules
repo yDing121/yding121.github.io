@@ -13,5 +13,13 @@ service firebase.storage {
         && request.resource.contentType.matches('image/.*');
       allow delete: if false;
     }
+    match /fridge-wallpapers/{userId}/{file=**} {
+      allow read: if isAllowed();
+      allow write: if isAllowed()
+        && request.auth.uid == userId
+        && request.resource.size < 5 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*');
+      allow delete: if isAllowed();
+    }
   }
 }
