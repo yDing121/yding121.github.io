@@ -76,7 +76,7 @@ Storing orientation at upload (rather than measuring on each page load) means ca
 Two keys (one per orientation) so that rotating a phone doesn't keep rerolling:
 
 - `fridge.wallpaper.daily.landscape` → `{ date: "YYYY-MM-DD", wallpaperId, url }`
-- `fridge.wallpaper.daily.portrait`  → `{ date: "YYYY-MM-DD", wallpaperId, url }`
+- `fridge.wallpaper.daily.portrait` → `{ date: "YYYY-MM-DD", wallpaperId, url }`
 
 `url` is cached so the background can paint instantly on next load, before Firestore returns.
 
@@ -86,7 +86,7 @@ Two keys (one per orientation) so that rotating a phone doesn't keep rerolling:
 
 1. Determine current orientation: `window.innerWidth >= window.innerHeight ? "landscape" : "portrait"`.
 2. Read localStorage key for that orientation.
-3. If cached entry exists *and* `date` matches today (local date, `YYYY-MM-DD`): paint background from cached `url` immediately.
+3. If cached entry exists _and_ `date` matches today (local date, `YYYY-MM-DD`): paint background from cached `url` immediately.
 4. Either way, fetch the wallpapers catalog from Firestore in the background.
 5. If cache was stale or empty: filter catalog to current orientation, pick a random doc, write to localStorage, paint.
 6. If catalog is empty for this orientation: fall back to the current corkboard look (no background image, no error).
@@ -123,7 +123,7 @@ Toolbar gets a `wallpapers` link/button that opens a modal:
 
 ```css
 .fridge-board {
-  background-color: #f3efe7;   /* fallback while wallpaper loads */
+  background-color: #f3efe7; /* fallback while wallpaper loads */
   background-size: cover;
   background-position: center;
   /* background-image is set inline via JS when a wallpaper is chosen */
@@ -141,10 +141,7 @@ No darkening overlay added by default. If darker wallpapers prove to bury sticki
 `assets/js/fridge/data.js`:
 
 ```js
-const COLORS = [
-  "yellow", "pink", "blue", "green",
-  "peach", "lavender", "mint", "lemon", "sky", "coral",
-];
+const COLORS = ["yellow", "pink", "blue", "green", "peach", "lavender", "mint", "lemon", "sky", "coral"];
 ```
 
 `assets/css/fridge.css` adds six classes (`.sticky.peach`, `.sticky.lavender`, `.sticky.mint`, `.sticky.lemon`, `.sticky.sky`, `.sticky.coral`) in the same soft-pastel range as the existing four. Existing blobs in Firestore keep their stored color string and render unchanged.
@@ -152,7 +149,7 @@ const COLORS = [
 Suggested hex values (final tuning at implementation):
 
 | name     | hex     |
-|----------|---------|
+| -------- | ------- |
 | peach    | #ffd6b0 |
 | lavender | #e0c8ff |
 | mint     | #c8f0e0 |

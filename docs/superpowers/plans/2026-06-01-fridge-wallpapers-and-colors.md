@@ -7,6 +7,7 @@
 **Architecture:** Pure client-side, same patterns as the existing fridge. Wallpaper files live in Firebase Storage under `fridge-wallpapers/{uid}/{ts}-{name}`; metadata (incl. orientation computed at upload) lives in a new Firestore `wallpapers` collection. Selection caches per-orientation in localStorage. A new `wallpaper.js` module handles paint/daily-pick/shuffle; a new `wallpapers-modal.js` handles upload/manage UI. Colors are expanded purely in `data.js` (random pool) and `fridge.css` (new classes).
 
 **Tech Stack:**
+
 - Firebase v10 modular SDK (Firestore + Storage) — already loaded from gstatic CDN
 - Vanilla ES modules — no build tooling
 - Jekyll (al-folio) static site
@@ -17,6 +18,7 @@
 **Testing approach:** This repo has no JS test framework — verification is manual via `bundle exec jekyll serve --livereload` and the live Firebase backend. Each task ends with an explicit "do X, expect Y" step. Do not fake automated tests.
 
 **Prerequisites:**
+
 - Firebase CLI installed and authenticated (`firebase login`). Used only to deploy rules.
 - The dev account in `firebase-config.js` is already in the allowed-UIDs list.
 - An existing logged-in fridge session works (i.e., the fridge feature from `2026-05-27-fridge.md` is deployed and functional).
@@ -27,27 +29,28 @@
 
 **New files:**
 
-| Path                                          | Responsibility                                                                  |
-| --------------------------------------------- | ------------------------------------------------------------------------------- |
-| `assets/js/fridge/wallpaper.js`               | Daily-pick logic, paint, shuffle, orientation listener; exports public helpers  |
-| `assets/js/fridge/wallpapers-modal.js`        | Manage Wallpapers modal: upload, thumbnail grid, click-to-set, delete           |
+| Path                                   | Responsibility                                                                 |
+| -------------------------------------- | ------------------------------------------------------------------------------ |
+| `assets/js/fridge/wallpaper.js`        | Daily-pick logic, paint, shuffle, orientation listener; exports public helpers |
+| `assets/js/fridge/wallpapers-modal.js` | Manage Wallpapers modal: upload, thumbnail grid, click-to-set, delete          |
 
 **Modified files:**
 
-| Path                                  | Change                                                                  |
-| ------------------------------------- | ----------------------------------------------------------------------- |
-| `assets/js/fridge/data.js`            | Expand `COLORS` array; add `listWallpapers`, `uploadWallpaper`, `deleteWallpaper` |
-| `assets/js/fridge/main.js`            | Wire shuffle + manage-wallpapers buttons; call wallpaper init on auth ready |
-| `_pages/fridge.md`                    | Add `↻` shuffle button and `wallpapers` button to toolbar               |
-| `assets/css/fridge.css`               | Six new sticky color classes; wallpaper background rules; modal grid styles |
-| `firestore.rules`                     | Add `wallpapers` collection rules                                       |
-| `storage.rules`                       | Add `fridge-wallpapers/*` rules                                         |
+| Path                       | Change                                                                            |
+| -------------------------- | --------------------------------------------------------------------------------- |
+| `assets/js/fridge/data.js` | Expand `COLORS` array; add `listWallpapers`, `uploadWallpaper`, `deleteWallpaper` |
+| `assets/js/fridge/main.js` | Wire shuffle + manage-wallpapers buttons; call wallpaper init on auth ready       |
+| `_pages/fridge.md`         | Add `↻` shuffle button and `wallpapers` button to toolbar                         |
+| `assets/css/fridge.css`    | Six new sticky color classes; wallpaper background rules; modal grid styles       |
+| `firestore.rules`          | Add `wallpapers` collection rules                                                 |
+| `storage.rules`            | Add `fridge-wallpapers/*` rules                                                   |
 
 ---
 
 ## Task 1: Expand the sticky color palette
 
 **Files:**
+
 - Modify: `assets/js/fridge/data.js:16`
 - Modify: `assets/css/fridge.css:159-170` (after the existing color classes)
 
@@ -62,10 +65,7 @@ const COLORS = ["yellow", "pink", "blue", "green"];
 with:
 
 ```js
-const COLORS = [
-  "yellow", "pink", "blue", "green",
-  "peach", "lavender", "mint", "lemon", "sky", "coral",
-];
+const COLORS = ["yellow", "pink", "blue", "green", "peach", "lavender", "mint", "lemon", "sky", "coral"];
 ```
 
 - [ ] **Step 2: Add the six new CSS color classes**
@@ -113,6 +113,7 @@ git commit -m "feat(fridge): expand sticky color palette to 10 pastels"
 ## Task 2: Update Firestore and Storage rules
 
 **Files:**
+
 - Modify: `firestore.rules`
 - Modify: `storage.rules`
 
@@ -219,6 +220,7 @@ Expected: output ends with `✔  Deploy complete!` and no errors. If `firebase` 
 - [ ] **Step 4: Smoke-test rules via Firebase Console**
 
 Open Firebase Console → Firestore → Rules Playground. Simulate:
+
 - `get /wallpapers/abc` as authenticated user with one of the two allowed UIDs → Expected: allowed.
 - `get /wallpapers/abc` as authenticated user with a random UID → Expected: denied.
 - `create /wallpapers/abc` with `uploaderUid` matching authed UID, allowed UID → Expected: allowed.
@@ -235,6 +237,7 @@ git commit -m "feat(fridge): rules for wallpapers collection and storage path"
 ## Task 3: Add wallpaper data-layer functions
 
 **Files:**
+
 - Modify: `assets/js/fridge/data.js`
 
 - [ ] **Step 1: Add the wallpaper functions to data.js**
@@ -361,6 +364,7 @@ git commit -m "feat(fridge): data-layer functions for wallpaper CRUD"
 ## Task 4: Wallpaper rendering module + CSS
 
 **Files:**
+
 - Create: `assets/js/fridge/wallpaper.js`
 - Modify: `assets/css/fridge.css`
 
@@ -561,8 +565,12 @@ In `assets/css/fridge.css`, locate the `.fridge-board { ... }` block (around lin
 /* Board background — warm corkboard feel (fallback) */
 .fridge-board {
   background-color: #f3efe7;
-  background-image: radial-gradient(circle at 20% 30%, rgba(180, 140, 80, 0.05) 0, transparent 40%),
-    radial-gradient(circle at 80% 70%, rgba(180, 140, 80, 0.05) 0, transparent 40%);
+  background-image: radial-gradient(circle at 20% 30%, rgba(180, 140, 80, 0.05) 0, transparent 40%), radial-gradient(circle at 80% 70%, rgba(
+          180,
+          140,
+          80,
+          0.05
+        ) 0, transparent 40%);
   background-size: auto;
   background-position: 0 0;
   min-height: calc(100dvh - 60px);
@@ -618,7 +626,8 @@ Test orientation: resize browser narrower than tall (drag to a phone-ish portrai
 
 ```js
 const resp = await fetch("https://placehold.co/900x1600/4ae290/ffffff.png?text=portrait+test");
-const blob = await resp.blob(); const file = new File([blob], "pt-test.png", { type: "image/png" });
+const blob = await resp.blob();
+const file = new File([blob], "pt-test.png", { type: "image/png" });
 await data.uploadWallpaper(file);
 await wp.refreshWallpaper();
 ```
@@ -637,6 +646,7 @@ git commit -m "feat(fridge): wallpaper render module with daily-pick + shuffle"
 ## Task 5: Manage Wallpapers modal
 
 **Files:**
+
 - Create: `assets/js/fridge/wallpapers-modal.js`
 - Modify: `assets/css/fridge.css`
 
@@ -902,6 +912,7 @@ git commit -m "feat(fridge): manage-wallpapers modal with upload/grid/delete"
 ## Task 6: Wire toolbar buttons and main.js
 
 **Files:**
+
 - Modify: `_pages/fridge.md`
 - Modify: `assets/js/fridge/main.js`
 
@@ -910,31 +921,31 @@ git commit -m "feat(fridge): manage-wallpapers modal with upload/grid/delete"
 In `_pages/fridge.md`, replace the toolbar block (lines 19-27):
 
 ```html
-  <div id="fridge-toolbar" class="fridge-toolbar">
-    <button id="fridge-new" type="button">+ new note</button>
-    <label class="cap-label">
-      showing <span id="fridge-cap-value">5</span>
-      <input id="fridge-cap" type="range" min="1" max="20" value="5" />
-    </label>
-    <a id="fridge-archive-link" href="/fridge/archive/">archive →</a>
-    <button id="fridge-signout" type="button">sign out</button>
-  </div>
+<div id="fridge-toolbar" class="fridge-toolbar">
+  <button id="fridge-new" type="button">+ new note</button>
+  <label class="cap-label">
+    showing <span id="fridge-cap-value">5</span>
+    <input id="fridge-cap" type="range" min="1" max="20" value="5" />
+  </label>
+  <a id="fridge-archive-link" href="/fridge/archive/">archive →</a>
+  <button id="fridge-signout" type="button">sign out</button>
+</div>
 ```
 
 with:
 
 ```html
-  <div id="fridge-toolbar" class="fridge-toolbar">
-    <button id="fridge-new" type="button">+ new note</button>
-    <label class="cap-label">
-      showing <span id="fridge-cap-value">5</span>
-      <input id="fridge-cap" type="range" min="1" max="20" value="5" />
-    </label>
-    <button id="fridge-shuffle-wallpaper" type="button" title="shuffle wallpaper">↻</button>
-    <button id="fridge-wallpapers" type="button">wallpapers</button>
-    <a id="fridge-archive-link" href="/fridge/archive/">archive →</a>
-    <button id="fridge-signout" type="button">sign out</button>
-  </div>
+<div id="fridge-toolbar" class="fridge-toolbar">
+  <button id="fridge-new" type="button">+ new note</button>
+  <label class="cap-label">
+    showing <span id="fridge-cap-value">5</span>
+    <input id="fridge-cap" type="range" min="1" max="20" value="5" />
+  </label>
+  <button id="fridge-shuffle-wallpaper" type="button" title="shuffle wallpaper">↻</button>
+  <button id="fridge-wallpapers" type="button">wallpapers</button>
+  <a id="fridge-archive-link" href="/fridge/archive/">archive →</a>
+  <button id="fridge-signout" type="button">sign out</button>
+</div>
 ```
 
 - [ ] **Step 2: Wire wallpaper init + buttons in main.js**
@@ -1006,6 +1017,7 @@ watchAuth(
 Run: `bundle exec jekyll serve --livereload`. Hard-reload (Ctrl+Shift+R) `/fridge/`.
 
 Sign in. Expected:
+
 - Toolbar now shows `+ new note`, the `showing N` slider, a `↻` button, a `wallpapers` button, `archive →`, `sign out`.
 - The fridge-board background paints with one of your previously-uploaded wallpapers (matching the current viewport orientation) within ~1 second of sign-in.
 - Stickies render and drift over the wallpaper.

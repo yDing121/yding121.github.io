@@ -14,10 +14,7 @@ import {
 import { ref as storageRef, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 import { db, storage, auth } from "./firebase-init.js";
 
-const COLORS = [
-  "yellow", "pink", "blue", "green",
-  "peach", "lavender", "mint", "lemon", "sky", "coral",
-];
+const COLORS = ["yellow", "pink", "blue", "green", "peach", "lavender", "mint", "lemon", "sky", "coral"];
 
 export async function listBlobs({ includeArchived = false } = {}) {
   const base = collection(db, "blobs");
@@ -79,7 +76,7 @@ export function pickRandom(blobs, cap) {
 }
 
 /**
- * Recency-weighted sampling *with replacement*.
+ * Recency-weighted sampling WITHOUT replacement.
  *
  * `blobs` is expected to be newest-first (as returned by listBlobs). We use the
  * array index as a recency rank:
@@ -99,6 +96,7 @@ export function pickRandom(blobs, cap) {
 export function pickWeightedRecent(blobs, cap, { halfLife = 60, mix = 0.6 } = {}) {
   const n = blobs.length;
   if (n === 0 || cap <= 0) return [];
+  if (n <= cap) return blobs.slice();
 
   // Clamp/guard inputs.
   const hl = Math.max(1, Number(halfLife) || 60);
@@ -115,18 +113,37 @@ export function pickWeightedRecent(blobs, cap, { halfLife = 60, mix = 0.6 } = {}
   }
   if (sum <= 0) return blobs.slice(0, Math.min(cap, n));
 
-  // Sample with replacement.
+  // Sample WITHOUT replacement (unique stickies on screen), but each shuffle is
+  // a fresh draw (so across shuffles you can see the same blob again).
   const out = [];
+  const used = new Array(n).fill(false);
+
   for (let k = 0; k < cap; k++) {
-    let r = Math.random() * sum;
-    let idx = 0;
+    // Recompute remaining sum each pick; n is small so this is fine.
+    let remainingSum = 0;
+    for (let i = 0; i < n; i++) if (!used[i]) remainingSum += weights[i];
+    if (remainingSum <= 0) break;
+
+    let r = Math.random() * remainingSum;
+    let idx = -1;
     for (let i = 0; i < n; i++) {
+      if (used[i]) continue;
       r -= weights[i];
       if (r <= 0) {
         idx = i;
         break;
       }
     }
+    if (idx === -1) {
+      // Fallback for floating point edge cases.
+      for (let i = 0; i < n; i++) {
+        if (!used[i]) {
+          idx = i;
+          break;
+        }
+      }
+    }
+    used[idx] = true;
     out.push(blobs[idx]);
   }
   return out;
