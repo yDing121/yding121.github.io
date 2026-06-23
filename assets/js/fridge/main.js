@@ -1,6 +1,6 @@
 // assets/js/fridge/main.js
 import { watchAuth, bindLoginForm, bindSignOut } from "./auth.js";
-import { listBlobs, pickRandom } from "./data.js";
+import { listBlobs, pickWeightedRecent } from "./data.js";
 import { startDrift } from "./drift.js";
 import { openReadModal } from "./modal.js";
 import { openSubmitModal } from "./submit.js";
@@ -16,6 +16,12 @@ const capValue = document.getElementById("fridge-cap-value");
 
 let drift = null;
 let allBlobs = [];
+
+function sampleShown(cap) {
+  // rank-based weighting: blobs are already newest-first.
+  // moderate bias: halfLife in ranks + a uniform mix to keep older blobs visible.
+  return pickWeightedRecent(allBlobs, cap, { halfLife: 60, mix: 0.6 });
+}
 
 async function refresh() {
   try {
@@ -36,7 +42,7 @@ function applyCap() {
     drift = null;
     return;
   }
-  drift = startDrift(stageEl, pickRandom(allBlobs, cap), (blob) => {
+  drift = startDrift(stageEl, sampleShown(cap), (blob) => {
     drift && drift.pause();
     openReadModal(blob, {
       onEdit: (b) => openEditModal(b, { onSaved: refresh }),
@@ -57,6 +63,11 @@ function applyCap() {
 }
 
 capInput.addEventListener("input", applyCap);
+
+document.getElementById("fridge-shuffle").addEventListener("click", () => {
+  // Shuffle should pick a new set of blobs from the full list (cap respected).
+  applyCap();
+});
 
 document.getElementById("fridge-new").addEventListener("click", () => {
   if (drift) drift.pause();

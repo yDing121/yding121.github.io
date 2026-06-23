@@ -78,6 +78,60 @@ export function pickRandom(blobs, cap) {
   return copy.slice(0, cap);
 }
 
+/**
+ * Recency-weighted sampling *with replacement*.
+ *
+ * `blobs` is expected to be newest-first (as returned by listBlobs). We use the
+ * array index as a recency rank:
+ *   rank 0 = newest, rank 1 = next newest, ...
+ *
+ * The weight is a blend between:
+ *   - uniform (so older blobs never become "impossible" to see)
+ *   - exponential decay by rank (so newer blobs are more likely)
+ *
+ * Final weight:
+ *   w(rank) = (1 - mix) * 1 + mix * 0.5^(rank / halfLife)
+ *
+ * Where:
+ *   - halfLife is measured in ranks (not days)
+ *   - mix in [0, 1] controls how strong the recency bias is
+ */
+export function pickWeightedRecent(blobs, cap, { halfLife = 60, mix = 0.6 } = {}) {
+  const n = blobs.length;
+  if (n === 0 || cap <= 0) return [];
+
+  // Clamp/guard inputs.
+  const hl = Math.max(1, Number(halfLife) || 60);
+  const m = Math.max(0, Math.min(1, Number(mix)));
+
+  // Precompute weights by rank.
+  const weights = new Array(n);
+  let sum = 0;
+  for (let i = 0; i < n; i++) {
+    const decayed = Math.pow(0.5, i / hl);
+    const w = (1 - m) * 1 + m * decayed;
+    weights[i] = w;
+    sum += w;
+  }
+  if (sum <= 0) return blobs.slice(0, Math.min(cap, n));
+
+  // Sample with replacement.
+  const out = [];
+  for (let k = 0; k < cap; k++) {
+    let r = Math.random() * sum;
+    let idx = 0;
+    for (let i = 0; i < n; i++) {
+      r -= weights[i];
+      if (r <= 0) {
+        idx = i;
+        break;
+      }
+    }
+    out.push(blobs[idx]);
+  }
+  return out;
+}
+
 // ── Wallpapers ──────────────────────────────────────────────────────────────
 
 export async function listWallpapers() {

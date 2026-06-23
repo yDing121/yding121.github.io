@@ -22,6 +22,7 @@ entry_script: /assets/js/fridge/main.js
       showing <span id="fridge-cap-value">5</span>
       <input id="fridge-cap" type="range" min="1" max="20" value="5" />
     </label>
+    <button id="fridge-shuffle" type="button" title="shuffle notes">shuffle</button>
     <button id="fridge-shuffle-wallpaper" type="button" title="shuffle wallpaper">↻</button>
     <button id="fridge-wallpapers" type="button">wallpapers</button>
     <a id="fridge-archive-link" href="/fridge/archive/">archive →</a>
